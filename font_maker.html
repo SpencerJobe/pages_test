@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Font Maker</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        * {
+            margin:0;
+            padding:0;
+            box-sizing: border-box;
+        }
+        .page {
+            position:relative;
+            width:600px;
+            margin:auto;
+            background:rgb(220,220,220);
+            min-height:768px;
+        }
+        .pixel {
+            box-sizing:border-box;
+            position:absolute;
+            width:32px;
+            height:32px;
+            overflow: hidden;
+            border: 1px solid black;
+            background:rgb(64,64,64);
+        }
+        #arrayData {
+            position:absolute;
+            top:280px;
+            left:0px;
+            width:256px;
+            height:256px;
+            resize:none;
+            overflow: scroll;
+        }
+    </style>
+    <script>
+        var pixelData = [[0,0,0,0,0,0,],
+                        [0,0,0,0,0,0,],
+                        [0,0,0,0,0,0,],
+                        [0,0,0,0,0,0,],
+                        [0,0,0,0,0,0,],
+                        [0,0,0,0,0,0,]];
+
+        function drawGrid() {
+            var template = "<div id=\"pixel_{x}_{y}\" class=\"pixel\" onclick=\"updatePixel({x},{y})\" style=\"top:{top}px; left:{left}px\">&nbsp;</div>";
+            var pixel = "";
+            var html = "";
+            var top = "";
+            var left = "";
+            for (var x = 0; x < 6; x += 1) {
+                for (var y = 0; y < 6; y += 1) {
+                    top = y * 32;
+                    left = x * 32;
+                    pixel = template;
+                    pixel = pixel.replace(/\{x\}/g,x);
+                    pixel = pixel.replace(/\{y\}/g,y);
+                    pixel = pixel.replace(/\{top\}/g,top);
+                    pixel = pixel.replace(/\{left\}/g,left);
+                    html += pixel;
+                }
+            }
+            document.getElementById("pixels").innerHTML += html;
+        }
+
+        function updatePixel(x,y) {
+            var id = "pixel_" + x + "_" + y;
+            var elem = document.getElementById(id);
+            if (pixelData[y][x] == 1)  {
+                pixelData[y][x] = 0;
+                elem.style.background = "rgb(64,64,64)";
+            } else {
+                pixelData[y][x] = 1;
+                elem.style.background = "rgb(192,192,192)";
+            }
+                            
+            updatePixelArray();
+        }
+
+        function updatePixelArray() {
+            var text = "[";
+            var charBlob = "";
+            for (var y = 0; y < 6; y += 1) {
+                text += "[";
+                for (var x = 0; x < 6; x += 1) {
+                    text += pixelData[y][x] + ",";
+                    charBlob += pixelData[y][x];
+                }
+                text = text.substring(0,text.length-1);
+                text += "],\n";
+            }
+            text = text.substring(0,text.length-2);
+            text += "];\n";
+            text += "\n  \"" + charBlob + "\"";
+            document.getElementById("arrayData").value = text;
+        }
+
+        window.onload = function () {
+            drawGrid();
+        };
+
+    </script>
+</head>
+<body>
+    <div class="page">
+        <div id="pixels"></div>
+        <textarea id="arrayData">/arraydata</textarea>
+    </div>
+</body>
+</html>
