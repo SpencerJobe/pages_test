@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        * {
+            margin:0px;
+            padding:0px;
+            box-sizing: border-box;
+        }
+        body {
+            background:rgb(225,220,220);
+        }
+        .screen {
+            position:absolute;
+            top:5%;
+            height:44%;
+            left:10%;
+            right:10%;
+            background:rgb(178,188,138);
+            overflow: hidden;
+            box-shadow: inset 0 0 14px 4px rgba(128, 128, 128, 0.59);
+        }
+
+        /*BEGIN directional-pad */
+            .directional-pad {
+                position: absolute;
+                top:60%;
+                left:5%;
+                width:50%;
+                height:30%;
+                border:1px solid blue;
+            }
+
+            /*BEGIN directional-pad-top-row */
+                .directional-pad-top-row {
+                    position:absolute;
+                    top:0%;
+                    left:0%;
+                    width:100%;
+                    height:32%;
+                    border:1px solid green;
+                }
+
+                /*BEGIN directional-pad-up-left-button */
+                    .directional-pad-up-left-button {
+                        position:absolute;
+                        top:0%;
+                        left:0%;
+                        width:32%;
+                        height:98%;
+                        border:1px solid rgb(255,255,0);
+                    }
+                /*END */
+
+                /*BEGIN directional-pad-up-button */
+                    .directional-pad-up-button {
+                        position:absolute;
+                        top:0%;
+                        left:33%;
+                        width:32%;
+                        height:98%;
+                        border:1px solid rgb(0,255,0);
+                    }
+                /*END*/
+
+                /*BEGIN directional-pad-up-right-button */
+                    .directional-pad-up-right-button {
+                        position:absolute;
+                        top:0%;
+                        left:66%;
+                        width:32%;
+                        height:98%;
+                        border:1px solid rgb(0,255,255);
+                    }
+                /*END*/
+
+            /*END*/
+
+            /*BEGIN directional-pad-middle-row */
+                .directional-pad-middle-row {
+                    position:absolute;
+                    top:33%;
+                    left:0%;
+                    width:100%;
+                    height:32%;
+                    border:1px solid green;
+                }
+
+                /*BEGIN directional-pad-left-button */
+                    .directional-pad-left-button {
+                        position:absolute;
+                        top:0%;
+                        left:0%;
+                        width:32%;
+                        height:98%;
+                        border:1px solid rgb(255,0,0);
+                    }
+                /*END */
+
+                /*BEGIN directional-pad-center-button */
+                    .directional-pad-center-button {
+                        position:absolute;
+                        top:0%;
+                        left:33%;
+                        width:32%;
+                        height:98%;
+                        border:1px solid rgb(0,0,0);
+                    }
+                /*END*/
+
+                /*BEGIN directional-pad-right-button */
+                    .directional-pad-right-button {
+                        position:absolute;
+                        top:0%;
+                        left:66%;
+                        width:32%;
+                        height:98%;
+                        border:1px solid rgb(0,0,255);
+                    }
+                /*END*/
+
+            /*END*/
+
+
+            /*BEGIN directional-pad-bottom-row */
+                .directional-pad-bottom-row {
+                    position:absolute;
+                    top:66%;
+                    left:0%;
+                    width:100%;
+                    height:32%;
+                    border:1px solid green;
+                }
+
+                /*BEGIN directional-pad-down-left-button */
+                    .directional-pad-down-left-button {
+                        position:absolute;
+                        top:0%;
+                        left:0%;
+                        width:32%;
+                        height:98%;
+                        border:1px solid rgb(255,0,0);
+                    }
+                /*END */
+
+                /*BEGIN directional-pad-down-button */
+                    .directional-pad-down-button {
+                        position:absolute;
+                        top:0%;
+                        left:33%;
+                        width:32%;
+                        height:98%;
+                        border:1px solid rgb(0,0,0);
+                    }
+                /*END*/
+
+                /*BEGIN directional-pad-down-right-button */
+                    .directional-pad-down-right-button {
+                        position:absolute;
+                        top:0%;
+                        left:66%;
+                        width:32%;
+                        height:98%;
+                        border:1px solid rgb(0,0,255);
+                    }
+                /*END*/
+
+            /*END*/
+
+
+        /*END*/
+
+        .menu-button {
+            position: absolute;
+            top:93%;
+            left:45%;
+            width:15%;
+            height:4.5%;
+            background:rgb(64,64,64);
+            border-radius: 12%;
+        }
+        .button-A {
+            position:absolute;
+            top:60%;
+            left:75%;
+            width:16%;
+            height:9%;
+            border-radius: 50%;
+            background:rgb(128,30,50);
+        }
+        .button-B {
+            position:absolute;
+            top:75%;
+            left:75%;
+            width:16%;
+            height:9%;
+            border-radius: 50%;
+            background:rgb(128,30,50);
+        }
+
+        .pixel {
+            position:absolute;
+            width:1%;
+            height:1%;
+            background:rgb(92, 110, 86);
+            font-size:0px;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+    <div id="geScreen" class="screen">
+        <div class="pixel" style="top:0%; left:0%;"></div>
+        <div class="pixel" style="top:0%; left:2%;"></div>
+        <div class="pixel" style="top:2%; left:2%;"></div>
+    </div>
+
+    <div id="geDirectionalPad" class="directional-pad">
+        
+        <div id="geDirectionalPadTopRow" class="directional-pad-top-row">
+            <div id="geButtonUpLeft" class="directional-pad-up-left-button"> </div>
+            <div id="geButtonUp" class="directional-pad-up-button"> </div>
+            <div id="geButtonUpRight" class="directional-pad-up-right-button"> </div>
+        </div>
+      
+        <div id="geDirectionalPadMiddleRow" class="directional-pad-middle-row">
+
+            <div id="geButtonLeft" class="directional-pad-left-button"> </div>
+            <div id="geButtonCenter" class="directional-pad-center-button"> </div>
+            <div id="geButtonRight" class="directional-pad-right-button"> </div>
+
+        </div>
+
+        <div id="geDirectionalPadBottomRow" class="directional-pad-bottom-row">
+
+            <div id="geButtonDownLeft" 
+                class="directional-pad-down-left-button"
+                ontouchstart="buttonRegister('down','left');"
+                ontouchend="buttonUnregister('down','left');"
+                ontouchmove="buttonCheckStatus(event,'geButtonDownLeft','down','left');"> </div>
+
+
+            <div id="geButtonDown" 
+                class="directional-pad-down-button"
+                ontouchstart="buttonRegister('down');"
+                ontouchend="buttonUnregister('down')"
+                ontouchmove="buttonCheckStatus(event,'geButtonDown','down');"> </div>
+
+
+            <div id="geButtonDownRight"
+                 class="directional-pad-down-right-button"
+                 ontouchstart="buttonRegister('down','right');"
+                 ontouchend="buttonUnregister('down','right');"
+                 ontouchmove="buttonCheckStatus(event,'geButtonDownRight','down','right');"> </div>
+
+        </div>
+
+
+    </div>
+    <div id="geDPad" class="directional-pad" 
+         style="z-index: 9999; background:rgba(0,0,0,0.6)"
+         ontouchstart="DPadRegisterButton(event);"
+         ontouchmove="DPadRegisterButton(event);"
+         ontouchend="DPadTouchEnd(event);"
+         
+    > </div>
+
+    <div id="geButtonMenu" class="menu-button"></div>
+    <div id="geButtonA" class="button-A"></div>
+    <div id="geButtonB" class="button-B"></div>
+
+    <script>
+        var gBUTTONS = {};
+        var gHTML_BUFFER = "";
+
+
+        var test = ["00000","11111","10001","11111","10101","10101"];
+
+        function sprite(x,y,spr) {
+            var dx = 0;
+            var dy = 0;
+            for(var row = 0; row < spr.length; row += 1) {
+                data = spr[row];
+                for (var col = 0; col < data.length; col += 1) {
+                    if (data[col]== "1") {
+                        dx = x + col;
+                        dy = y + row;
+                        plot(dx,dy);
+                    }
+                }
+            }
+        }
+
+        function plot(x,y) {
+            gHTML_BUFFER+= `<div class="pixel" style="top:${y}%; left:${x}%;"></div>`;
+        }
+
+        function rect(x,y,w,h) {
+            gHTML_BUFFER += `<div class="pixel" style="top:${y}%; left:${x}%; width:${w}%; height:${h}%;"></div>`;
+        }
+
+        function clear() {
+            geScreen.innerHTML = "";
+            gHTML_BUFFER = "";
+        }
+
+        function flip() {
+            geScreen.innerHTML = gHTML_BUFFER;
+        }
+
+        function inside(px,py, rx, ry, rw, rh) {
+            return (px > rx) && (px < (rx + rw)) && (py > ry) && (py < (ry+rh));
+        };
+
+        function DPadTouchEnd(ev) {
+            gBUTTONS['up'] = false;
+            gBUTTONS['left'] = false;
+            gBUTTONS['right'] = false;
+            gBUTTONS['down'] = false;
+        }
+
+
+        function DPadRegisterButton(ev) {
+            var e = ev || window.event;
+            var x = e.targetTouches[0].pageX;
+            var y = e.targetTouches[0].pageY;
+            var dpadRect = document.getElementById("geDPad").getBoundingClientRect();
+            var gridW = dpadRect.width/5;
+            var gridH = dpadRect.height/5;
+            var gridX = Math.floor((x-dpadRect.x) / gridW);
+            var gridY = Math.floor((y-dpadRect.y) / gridH);
+
+            gBUTTONS['up'] = gridY < 2;
+            gBUTTONS['left'] = gridX < 2;
+            gBUTTONS['right'] = gridX > 2;
+            gBUTTONS['down'] = gridY > 2;
+        }
+
+        function buttonRegister(btn1,btn2) {
+            gBUTTONS[btn1] = true;
+            if (btn2) { gBUTTONS[btn2] = true; }
+        }
+        function buttonUnregister(btn1,btn2) {
+            gBUTTONS[btn1] = false;
+            if (btn2) { gBUTTONS[btn2] = false; }
+        }
+
+        function buttonCheckStatus(ev, id, btn1, btn2) {
+            var e = ev || window.event;
+            var cx = e.targetTouches[0].pageX;
+            var cy = e.targetTouches[0].pageY;
+            var btnRect = document.getElementById(id).getBoundingClientRect();
+            var rx = btnRect.left || btnRect.x;
+            var ry = btnRect.top || btnRect.y;
+            var rw = btnRect.width;
+            var rh = btnRect.height;
+            var isInside = inside(cx,cy,rx,ry,rw,rh);
+
+            if (isInside) {
+                buttonRegister(btn1,btn2);
+            } else {
+                buttonUnregister(btn1,btn2);
+            }
+        }
+
+        function isButton(btn1,btn2) {
+            if (btn1 && btn2) {
+                return gBUTTONS[btn1] == true && gBUTTONS[btn2] == true;
+            }
+            return gBUTTONS[btn1] == true;
+        }
+
+        var px = 0;
+        var py = 0;
+        function update() {
+            clear();
+
+            if (isButton('up')) {
+                if (py > 0) {
+                    py -= 1;
+                }
+            }
+            if (isButton('down')) {
+                if (py < 95) {
+                    py += 1;
+                }
+            }
+
+            if (isButton('left')) {
+                if (px > 0) {
+                    px -= 1;
+                }
+            }
+            if (isButton('right')) {
+                if (px < 95) {
+                    px += 1;
+                }
+            }
+
+            sprite(px,py,test);
+            //plotChar(px,py,"a");
+            
+            flip();
+            requestAnimationFrame(update);
+        }
+
+        setTimeout(function() {
+            update();
+        },100);
+    </script>
+
+</body>
+</html>
