@@ -213,6 +213,7 @@
     </style>
 </head>
 <body>
+    <div id="versionNum" style="position:absolute; bottom:0px; left:0px;">1.0</div>
     <div id="geScreen" class="screen">
         <div class="pixel" style="top:0%; left:0%;"></div>
         <div class="pixel" style="top:0%; left:2%;"></div>
@@ -272,7 +273,7 @@
     <div id="geButtonMenu" class="menu-button"></div>
     <div id="geButtonA" class="button-A"></div>
     <div id="geButtonB" class="button-B"></div>
-
+    
     <script>
         var gBUTTONS = {};
         var gHTML_BUFFER = "";
@@ -329,15 +330,15 @@
             var x = e.targetTouches[0].pageX;
             var y = e.targetTouches[0].pageY;
             var dpadRect = document.getElementById("geDPad").getBoundingClientRect();
-            var gridW = dpadRect.width/3;
-            var gridH = dpadRect.height/3;
+            var gridW = dpadRect.width/5;
+            var gridH = dpadRect.height/5;
             var gridX = Math.floor((x-dpadRect.x) / gridW);
             var gridY = Math.floor((y-dpadRect.y) / gridH);
 
-            gBUTTONS['up'] = gridY == 0;
-            gBUTTONS['left'] = gridX == 0;
-            gBUTTONS['right'] = gridX == 2;
-            gBUTTONS['down'] = gridY == 2;
+            gBUTTONS['up'] = gridY < 2;
+            gBUTTONS['left'] = gridX < 2;
+            gBUTTONS['right'] = gridX > 2;
+            gBUTTONS['down'] = gridY > 2;
         }
 
         function buttonRegister(btn1,btn2) {
@@ -385,7 +386,7 @@
                 }
             }
             if (isButton('down')) {
-                if (py < 44) {
+                if (py < 95) {
                     py += 1;
                 }
             }
@@ -396,7 +397,7 @@
                 }
             }
             if (isButton('right')) {
-                if (px < 44) {
+                if (px < 95) {
                     px += 1;
                 }
             }
