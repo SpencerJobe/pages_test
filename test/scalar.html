@@ -13,6 +13,7 @@
         }
         body {
             background:rgb(225,220,220);
+            overscroll-behavior: none;
         }
         .screen {
             position:absolute;
@@ -28,149 +29,30 @@
         /*BEGIN directional-pad */
             .directional-pad {
                 position: absolute;
-                top:60%;
-                left:5%;
+                top:57%;
+                left:2%;
                 width:50%;
                 height:30%;
-                border:1px solid blue;
+                z-index: 9999px;
             }
 
-            /*BEGIN directional-pad-top-row */
-                .directional-pad-top-row {
-                    position:absolute;
-                    top:0%;
-                    left:0%;
-                    width:100%;
-                    height:32%;
-                    border:1px solid green;
-                }
+            .directional-pad-up-down {
+                position: absolute; 
+                top:20%;
+                bottom:20%;
+                left:40%;
+                width:20%;
+                background:rgb(64,64,64);
+            }
 
-                /*BEGIN directional-pad-up-left-button */
-                    .directional-pad-up-left-button {
-                        position:absolute;
-                        top:0%;
-                        left:0%;
-                        width:32%;
-                        height:98%;
-                        border:1px solid rgb(255,255,0);
-                    }
-                /*END */
-
-                /*BEGIN directional-pad-up-button */
-                    .directional-pad-up-button {
-                        position:absolute;
-                        top:0%;
-                        left:33%;
-                        width:32%;
-                        height:98%;
-                        border:1px solid rgb(0,255,0);
-                    }
-                /*END*/
-
-                /*BEGIN directional-pad-up-right-button */
-                    .directional-pad-up-right-button {
-                        position:absolute;
-                        top:0%;
-                        left:66%;
-                        width:32%;
-                        height:98%;
-                        border:1px solid rgb(0,255,255);
-                    }
-                /*END*/
-
-            /*END*/
-
-            /*BEGIN directional-pad-middle-row */
-                .directional-pad-middle-row {
-                    position:absolute;
-                    top:33%;
-                    left:0%;
-                    width:100%;
-                    height:32%;
-                    border:1px solid green;
-                }
-
-                /*BEGIN directional-pad-left-button */
-                    .directional-pad-left-button {
-                        position:absolute;
-                        top:0%;
-                        left:0%;
-                        width:32%;
-                        height:98%;
-                        border:1px solid rgb(255,0,0);
-                    }
-                /*END */
-
-                /*BEGIN directional-pad-center-button */
-                    .directional-pad-center-button {
-                        position:absolute;
-                        top:0%;
-                        left:33%;
-                        width:32%;
-                        height:98%;
-                        border:1px solid rgb(0,0,0);
-                    }
-                /*END*/
-
-                /*BEGIN directional-pad-right-button */
-                    .directional-pad-right-button {
-                        position:absolute;
-                        top:0%;
-                        left:66%;
-                        width:32%;
-                        height:98%;
-                        border:1px solid rgb(0,0,255);
-                    }
-                /*END*/
-
-            /*END*/
-
-
-            /*BEGIN directional-pad-bottom-row */
-                .directional-pad-bottom-row {
-                    position:absolute;
-                    top:66%;
-                    left:0%;
-                    width:100%;
-                    height:32%;
-                    border:1px solid green;
-                }
-
-                /*BEGIN directional-pad-down-left-button */
-                    .directional-pad-down-left-button {
-                        position:absolute;
-                        top:0%;
-                        left:0%;
-                        width:32%;
-                        height:98%;
-                        border:1px solid rgb(255,0,0);
-                    }
-                /*END */
-
-                /*BEGIN directional-pad-down-button */
-                    .directional-pad-down-button {
-                        position:absolute;
-                        top:0%;
-                        left:33%;
-                        width:32%;
-                        height:98%;
-                        border:1px solid rgb(0,0,0);
-                    }
-                /*END*/
-
-                /*BEGIN directional-pad-down-right-button */
-                    .directional-pad-down-right-button {
-                        position:absolute;
-                        top:0%;
-                        left:66%;
-                        width:32%;
-                        height:98%;
-                        border:1px solid rgb(0,0,255);
-                    }
-                /*END*/
-
-            /*END*/
-
+            .directional-pad-left-right {
+                position: absolute; 
+                top:40%;
+                height:20%;
+                left:20%;
+                right:20%;
+                background:rgb(64,64,64);
+            }
 
         /*END*/
 
@@ -213,62 +95,24 @@
     </style>
 </head>
 <body>
-    <div id="versionNum" style="position:absolute; bottom:0px; left:0px;">1.0</div>
+    <div id="versionNum" style="position:absolute; bottom:0px; right:0px; color:blue; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+        2
+    </div>
+    
     <div id="geScreen" class="screen">
         <div class="pixel" style="top:0%; left:0%;"></div>
         <div class="pixel" style="top:0%; left:2%;"></div>
         <div class="pixel" style="top:2%; left:2%;"></div>
     </div>
 
-    <div id="geDirectionalPad" class="directional-pad">
-        
-        <div id="geDirectionalPadTopRow" class="directional-pad-top-row">
-            <div id="geButtonUpLeft" class="directional-pad-up-left-button"> </div>
-            <div id="geButtonUp" class="directional-pad-up-button"> </div>
-            <div id="geButtonUpRight" class="directional-pad-up-right-button"> </div>
-        </div>
-      
-        <div id="geDirectionalPadMiddleRow" class="directional-pad-middle-row">
-
-            <div id="geButtonLeft" class="directional-pad-left-button"> </div>
-            <div id="geButtonCenter" class="directional-pad-center-button"> </div>
-            <div id="geButtonRight" class="directional-pad-right-button"> </div>
-
-        </div>
-
-        <div id="geDirectionalPadBottomRow" class="directional-pad-bottom-row">
-
-            <div id="geButtonDownLeft" 
-                class="directional-pad-down-left-button"
-                ontouchstart="buttonRegister('down','left');"
-                ontouchend="buttonUnregister('down','left');"
-                ontouchmove="buttonCheckStatus(event,'geButtonDownLeft','down','left');"> </div>
-
-
-            <div id="geButtonDown" 
-                class="directional-pad-down-button"
-                ontouchstart="buttonRegister('down');"
-                ontouchend="buttonUnregister('down')"
-                ontouchmove="buttonCheckStatus(event,'geButtonDown','down');"> </div>
-
-
-            <div id="geButtonDownRight"
-                 class="directional-pad-down-right-button"
-                 ontouchstart="buttonRegister('down','right');"
-                 ontouchend="buttonUnregister('down','right');"
-                 ontouchmove="buttonCheckStatus(event,'geButtonDownRight','down','right');"> </div>
-
-        </div>
-
-
-    </div>
     <div id="geDPad" class="directional-pad" 
-         style="z-index: 9999; background:rgba(0,0,0,0.6)"
          ontouchstart="DPadRegisterButton(event);"
          ontouchmove="DPadRegisterButton(event);"
-         ontouchend="DPadTouchEnd(event);"
-         
-    > </div>
+         ontouchend="DPadTouchEnd(event);" 
+    >
+        <div id="geDPadUpDown" class="directional-pad-up-down"></div>
+        <div id="geDPadLeftRight" class="directional-pad-left-right"></div>
+    </div>
 
     <div id="geButtonMenu" class="menu-button"></div>
     <div id="geButtonA" class="button-A"></div>
