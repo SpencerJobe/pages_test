@@ -88,17 +88,29 @@
             position:absolute;
             width:1%;
             height:1%;
-            background:rgb(92, 110, 86);
             font-size:0px;
             overflow: hidden;
         }
+
+
+        .c1 {
+            background:rgb(140, 162, 121);
+        }
+        .c2 {
+            background:rgb(92, 110, 86);
+        }
+        .c3 {
+            background:rgb(73, 87, 68);
+        }
+
+
     </style>
 </head>
 <body>
     <div id="versionNum" style="position:absolute; bottom:0px; right:0px; color:blue; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
         2
     </div>
-    
+
     <div id="geScreen" class="screen">
         <div class="pixel" style="top:0%; left:0%;"></div>
         <div class="pixel" style="top:0%; left:2%;"></div>
@@ -123,7 +135,16 @@
         var gHTML_BUFFER = "";
 
 
-        var test = ["00000","11111","10001","11111","10101","10101"];
+        var test = [
+            "00111100",
+            "01121210",
+            "01212120",
+            "12121222",
+            "11222223",
+            "02222330",
+            "02223330",
+            "00333300"
+        ];
 
         function sprite(x,y,spr) {
             var dx = 0;
@@ -131,21 +152,21 @@
             for(var row = 0; row < spr.length; row += 1) {
                 data = spr[row];
                 for (var col = 0; col < data.length; col += 1) {
-                    if (data[col]== "1") {
+                    if (data[col] != "0") {
                         dx = x + col;
                         dy = y + row;
-                        plot(dx,dy);
+                        plot(dx,dy, data[col]);
                     }
                 }
             }
         }
 
-        function plot(x,y) {
-            gHTML_BUFFER+= `<div class="pixel" style="top:${y}%; left:${x}%;"></div>`;
+        function plot(x,y,color) {
+            gHTML_BUFFER+= `<div class="pixel c${color}" style="top:${y}%; left:${x}%;"></div>`;
         }
 
-        function rect(x,y,w,h) {
-            gHTML_BUFFER += `<div class="pixel" style="top:${y}%; left:${x}%; width:${w}%; height:${h}%;"></div>`;
+        function rect(color,x,y,w,h) {
+            gHTML_BUFFER += `<div class="pixel c${color}" style="top:${y}%; left:${x}%; width:${w}%; height:${h}%;"></div>`;
         }
 
         function clear() {
@@ -249,6 +270,10 @@
             sprite(px,py,test);
             //plotChar(px,py,"a");
             
+            rect(1,10,10,10,10);
+            rect(2,10,20,10,10);
+            rect(3,10,30,10,10);
+
             flip();
             requestAnimationFrame(update);
         }
