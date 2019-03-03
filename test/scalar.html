@@ -36,6 +36,17 @@
             z-index: 501;
         }
 
+        .screen-canvas {
+            position:absolute;
+            top:5%;
+            height:44%;
+            left:10%;
+            width:80%;
+            background:transparent;
+            overflow: hidden;
+            z-index: 501;
+        }
+
         .screen-glass {
             position:absolute;
             z-index: 999;
@@ -150,6 +161,7 @@
 
     <div id="geScreenBackground" class="screen-background"> </div>
     <div id="geScreenForeground" class="screen-foreground"> </div>
+    <canvas id="geScreenCanvas" class="screen-canvas" width=100 height=100> </canvas>
     <div id="geScreenGlass" class="screen-glass"> </div>
 
     <div id="geDPad" class="directional-pad" 
@@ -178,16 +190,12 @@
     <script>
         (function loadGameEngine(win) {
             var gBUTTONS = {};
-            var gHTML_BUFFERS = {
-                "geScreenBackground" : "",
-                "geScreenForeground" : "",
-            };
-            var gHTML_BUFFER_TARGET = "geScreenBackground";
-
+            var gCONTEXT_2D;
             var gFRAME_TICK = 0;
             var gTICK = 0;
             var gFRAME_TICKS = [0,0,0,0,0,0,0,0,0,0];
-            
+            var gSCREEN_ZOOM = 1;
+
             //GAME PALETTE
                 var gGAME_PALETTE = [];
                 gGAME_PALETTE[0] = "rgb(178,188,138)";
@@ -274,21 +282,22 @@
 
             //***********************************************************************************************
             //INTERNAL ENGINE FUNCTIONS 
-
-                function plotChar(px,py,char,color) {
+            
+                function plotChar(px,py,char,fillStyleColor) {
                     var sprite = gGAME_FONT[char] || gGAME_FONT["?"];
                     var count = 0;
-                    var dx = px;
-                    var dy = py;
+                    var dx = px * gSCREEN_ZOOM;
+                    var dy = py * gSCREEN_ZOOM;
+                    gCONTEXT_2D.fillStyle = fillStyleColor;
                     for (var i = 0; i < 36; i += 1) {
                         if (sprite[i] == "1") {
-                            plot(color,dx,dy);
+                            gCONTEXT_2D.fillRect(dx,dy,gSCREEN_ZOOM,gSCREEN_ZOOM);
                         }
-                        dx += 1;
+                        dx += gSCREEN_ZOOM;
                         count += 1;
                         if (count == 6) {
-                            dy += 1;
-                            dx = px;
+                            dy += gSCREEN_ZOOM;
+                            dx = px * gSCREEN_ZOOM;
                             count = 0;
                         }
                     }
@@ -297,12 +306,15 @@
             //END
             //***********************************************************************************************
 
-            window.text = function text(color, x, y, value) {
+            window.text = function text(colorIndex, x, y, value) {
                 var letterSize = 6;
+                var char = "";
+                var fillStyleColor =  gGAME_PALETTE[colorIndex];
                 value = String(value);
                 value = value.toLowerCase();
                 for (var i = 0; i < value.length; i += 1) {
-                    plotChar(x,y,value[i],color);
+                    char = value[i];
+                    plotChar(x,y,char,fillStyleColor);
                     x += letterSize;
                 }
             };
@@ -328,11 +340,13 @@
             };
 
             window.plot = function plot(color,x,y) {
-                gHTML_BUFFERS[gHTML_BUFFER_TARGET] += `<div class="pixel c${color}" style="top:${y}%; left:${x}%;"></div>`;
+                gCONTEXT_2D.fillStyle = gGAME_PALETTE[color];
+                gCONTEXT_2D.fillRect(x,y,1,1);
             };
 
             window.rect = function rect(color,x,y,w,h) {
-                gHTML_BUFFERS[gHTML_BUFFER_TARGET] += `<div class="pixel c${color}" style="top:${y}%; left:${x}%; width:${w}%; height:${h}%;"></div>`;
+                gCONTEXT_2D.fillStyle = gGAME_PALETTE[color];
+                gCONTEXT_2D.fillRect(x,y,w,h);
             };
 
             window.setBuffer = function (bufferIndex) {
@@ -344,12 +358,11 @@
             }
 
             window.clear = function clear() {
-                document.getElementById(gHTML_BUFFER_TARGET).innerHTML = "";
-                gHTML_BUFFERS[gHTML_BUFFER_TARGET] = "";
+                rect(0,0,0,100,100);
             };
 
             window.flip = function flip() {
-                document.getElementById(gHTML_BUFFER_TARGET).innerHTML = gHTML_BUFFERS[gHTML_BUFFER_TARGET];
+                
             };
 
             window.rand = function rand(max) {
@@ -428,7 +441,13 @@
                 gBUTTONS[btn1] = false;
             };
 
-            
+            function createCanvas() {
+                var screen = document.getElementById("geScreen")
+            }
+
+            window.onload = function () {
+                gCONTEXT_2D = document.getElementById("geScreenCanvas").getContext("2d");
+            };         
 
         }(window));
 
@@ -447,31 +466,9 @@
             "00333300"
         ];
 
-        var backgroundIsDrawn = false;
-
-        function drawBackground() {
-            if (backgroundIsDrawn == false) {
-                setBuffer(0);
-                clear();
-                text(3,0,70,"hello world");
-                text(2,0,77,"hello world");
-                text(1,0,84,"hello world");
-                rect(1,10,10,10,10);
-                rect(2,10,20,10,10);
-                rect(3,10,30,10,10);
-                flip();
-                backgroundIsDrawn = true;
-            }
-        }
-
-
 
         function update() {
 
-            
-            drawBackground();
-
-            
             if (pressed('up')) {
                 if (py > 0) {
                     py -= 1;
@@ -507,7 +504,13 @@
             }
 
             sprite(px,py,test);
-            flip();
+            text(3,0,70,"hello world");
+            text(2,0,77,"hello world");
+            text(1,0,84,"hello world");
+            rect(1,10,10,10,10);
+            rect(2,10,20,10,10);
+            rect(3,10,30,10,10);
+            
             requestAnimationFrame(update);
         }
 
