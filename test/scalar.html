@@ -496,6 +496,16 @@
 
             setBuffer(1);
             clear();
+            if (pressed('A')) {
+                text(2,15,15,"PRESSED A!");
+            }
+            if (pressed('B')) {
+                text(3,15,22,"PRESSED B!");
+            }
+            if (pressed('menu')) {
+                text(2,15,29,"PRESSED MENU!");
+            }
+
             sprite(px,py,test);
             flip();
             requestAnimationFrame(update);
