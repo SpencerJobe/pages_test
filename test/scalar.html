@@ -22,6 +22,7 @@
             right:10%;
             background:rgb(178,188,138);
             overflow: hidden;
+            box-shadow: inset 0 0 14px 4px rgba(128, 128, 128, 0.59);
         }
 
         .up-arrow {
@@ -116,6 +117,9 @@
     <div id="geButtonB" class="button-B"></div>
 
     <script>
+        var gBUTTONS = {};
+        var gHTML_BUFFER = "";
+
         function plotChar(x,y,c) {
             switch(c) {
                 case "a" :  
@@ -125,22 +129,42 @@
                     rect(x+1,y+2,1,1);
             }
         }
+        var test = ["00000","11111","10001","11111","10101","10101"];
 
-        function rect(x,y,w,h) {
-            geScreen.innerHTML += `<div class="pixel" style="top:${y*2}%; left:${x*2}%; width:${w*2}%; height:${h*2}%;"></div>`;
-        }
-
-        function floodPixels() {
-            var html = "";
-            for (var x = 0; x < 50; x += 1) {
-                for (var y = 0; y < 50; y += 1) {
-                    html += `<div class="pixel" style="top:${(y*2)}%; left:${x*2}%"></div>`;
+        function sprite(x,y,spr) {
+            var dx = 0;
+            var dy = 0;
+            for(var row = 0; row < spr.length; row += 1) {
+                data = spr[row];
+                for (var col = 0; col < data.length; col += 1) {
+                    if (data[col]== "1") {
+                        dx = x + col;
+                        dy = y + row;
+                        plot(dx,dy);
+                    }
                 }
             }
-            geScreen.innerHTML = html;
         }
 
-        var gBUTTONS = {};
+        function plot(x,y) {
+            gHTML_BUFFER+= `<div class="pixel" style="top:${y*2}%; left:${x*2}%; width:2%; height:2%;"></div>`;
+        }
+
+        function rect(x,y,w,h) {
+            gHTML_BUFFER += `<div class="pixel" style="top:${y*2}%; left:${x*2}%; width:${w*2}%; height:${h*2}%;"></div>`;
+        }
+
+        function clear() {
+            geScreen.innerHTML = "";
+            gHTML_BUFFER = "";
+        }
+
+        function flip() {
+            geScreen.innerHTML = gHTML_BUFFER;
+        }
+
+
+        
         function buttonRegister(btn) {
             gBUTTONS[btn] = true;
         }
@@ -155,7 +179,8 @@
         var px = 0;
         var py = 0;
         function update() {
-            geScreen.innerHTML = "";
+            clear();
+
             if (isButton('up')) {
                 if (py > 0) {
                     py -= 1;
@@ -178,8 +203,10 @@
                 }
             }
 
-            plotChar(px,py,"a");
+            sprite(px,py,test);
+            //plotChar(px,py,"a");
             
+            flip();
             requestAnimationFrame(update);
         }
 
