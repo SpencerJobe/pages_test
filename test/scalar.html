@@ -106,10 +106,10 @@
         <div class="pixel" style="top:2%; left:2%;"></div>
     </div>
 
-    <div id="geButtonUp" class="up-arrow"> </div>
-    <div id="geButtonDown" class="down-arrow"> </div>
-    <div id="geButtonLeft" class="left-arrow"> </div>
-    <div id="geButtonRight" class="right-arrow"> </div>
+    <div id="geButtonUp" class="up-arrow" ontouchstart="buttonRegister('up');" ontouchend="buttonUnregister('up')"> </div>
+    <div id="geButtonDown" class="down-arrow" ontouchstart="buttonRegister('down');"  ontouchend="buttonUnregister('down')"> </div>
+    <div id="geButtonLeft" class="left-arrow" ontouchstart="buttonRegister('left');" ontouchend="buttonUnregister('left')"> </div>
+    <div id="geButtonRight" class="right-arrow" ontouchstart="buttonRegister('right');" ontouchend="buttonUnregister('right')"> </div>
 
     <div id="geButtonMenu" class="menu-button"></div>
     <div id="geButtonA" class="button-A"></div>
@@ -140,26 +140,40 @@
             geScreen.innerHTML = html;
         }
 
+        var gBUTTONS = {};
+        function buttonRegister(btn) {
+            gBUTTONS[btn] = true;
+        }
+        function buttonUnregister(btn) {
+            gBUTTONS[btn] = false;
+        }
+
+        function isButton(btn) {
+            return gBUTTONS[btn] == true;
+        }
+
         var px = 0;
         var py = 0;
         function update() {
             geScreen.innerHTML = "";
-
-            plotChar(px,py,"a");
-            px += 6;
-            if (px > 50) {
-                px = 0;
-                py += 6;
-                if (py > 50) {
-                    py = 0;
+            if (isButton('up')) {
+                if (py > 0) {
+                    py -= 1;
                 }
             }
+            if (isButton('down')) {
+                if (py < 44) {
+                    py += 1;
+                }
+            }
+
+            plotChar(px,py,"a");
             
             requestAnimationFrame(update);
         }
 
         setTimeout(function() {
-            //update();
+            update();
         },100);
     </script>
 
