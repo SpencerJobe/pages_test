@@ -92,8 +92,8 @@
 
         .pixel {
             position:absolute;
-            width:2%;
-            height:2%;
+            width:1%;
+            height:1%;
             background:rgb(92, 110, 86);
             font-size:0px;
             overflow: hidden;
@@ -122,7 +122,7 @@
 
         function plotChar(x,y,c) {
             switch(c) {
-                case "a" :  
+                case "a" :  //0114003121141211
                     rect(x,y+1,1,4);
                     rect(x,y,3,1);
                     rect(x+2,y+1,1,4);
@@ -147,11 +147,11 @@
         }
 
         function plot(x,y) {
-            gHTML_BUFFER+= `<div class="pixel" style="top:${y*2}%; left:${x*2}%; width:2%; height:2%;"></div>`;
+            gHTML_BUFFER+= `<div class="pixel" style="top:${y}%; left:${x}%;"></div>`;
         }
 
         function rect(x,y,w,h) {
-            gHTML_BUFFER += `<div class="pixel" style="top:${y*2}%; left:${x*2}%; width:${w*2}%; height:${h*2}%;"></div>`;
+            gHTML_BUFFER += `<div class="pixel" style="top:${y}%; left:${x}%; width:${w}%; height:${h}%;"></div>`;
         }
 
         function clear() {
