@@ -167,6 +167,17 @@
                 }
             }
 
+            if (isButton('left')) {
+                if (px > 0) {
+                    px -= 1;
+                }
+            }
+            if (isButton('right')) {
+                if (px < 44) {
+                    px += 1;
+                }
+            }
+
             plotChar(px,py,"a");
             
             requestAnimationFrame(update);
