@@ -84,6 +84,12 @@
             height:9%;
             border-radius: 50%;
             background:rgb(128,30,50);
+            text-align:center;
+            font-size:190%;
+            line-height:150%;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color:rgb(64,15,25);
+            overflow: hidden;
         }
         .button-B {
             position:absolute;
@@ -93,6 +99,12 @@
             height:9%;
             border-radius: 50%;
             background:rgb(128,30,50);
+            text-align:center;
+            font-size:190%;
+            line-height:150%;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color:rgb(64,15,25);
+            overflow: hidden;
         }
 
         .pixel {
@@ -103,6 +115,9 @@
             overflow: hidden;
         }
 
+        .c0 {
+            background:rgb(178,188,138);
+        }
 
         .c1 {
             background:rgb(140, 162, 121);
@@ -122,30 +137,280 @@
         2
     </div>
 
-    <div id="geScreen" class="screen">
-        <div class="pixel" style="top:0%; left:0%;"></div>
-        <div class="pixel" style="top:0%; left:2%;"></div>
-        <div class="pixel" style="top:2%; left:2%;"></div>
-    </div>
+    <div id="geScreen" class="screen"> </div>
     <div id="geScreenGlass" class="screen-glass"> </div>
 
     <div id="geDPad" class="directional-pad" 
-         ontouchstart="DPadRegisterButton(event);"
-         ontouchmove="DPadRegisterButton(event);"
-         ontouchend="DPadTouchEnd(event);" 
+         ontouchstart="gameEngineEventHandlers.DPadRegisterButton(event);"
+         ontouchmove="gameEngineEventHandlers.DPadRegisterButton(event);"
+         ontouchend="gameEngineEventHandlers.DPadTouchEnd(event);" 
     >
         <div id="geDPadUpDown" class="directional-pad-up-down"></div>
         <div id="geDPadLeftRight" class="directional-pad-left-right"></div>
     </div>
 
-    <div id="geButtonMenu" class="menu-button"></div>
-    <div id="geButtonA" class="button-A"></div>
-    <div id="geButtonB" class="button-B"></div>
+    <div id="geButtonMenu" class="menu-button" 
+        ontouchstart="gameEngineEventHandlers.registerButton('menu')"
+        ontouchend="gameEngineEventHandlers.unregisterButton('menu')"
+    > </div>
+
+    <div id="geButtonA" class="button-A"
+        ontouchstart="gameEngineEventHandlers.registerButton('A')"
+        ontouchend="gameEngineEventHandlers.unregisterButton('A')"
+    >A</div>
+    <div id="geButtonB" class="button-B"
+        ontouchstart="gameEngineEventHandlers.registerButton('B')"
+        ontouchend="gameEngineEventHandlers.unregisterButton('B')"
+    >B</div>
     
     <script>
-        var gBUTTONS = {};
-        var gHTML_BUFFER = "";
+        (function loadGameEngine(win) {
+            var gBUTTONS = {};
+            var gHTML_BUFFER = "";
+            
+            var gFRAME_TICK = 0;
+            var gTICK = 0;
+            var gFRAME_TICKS = [0,0,0,0,0,0,0,0,0,0];
+            
+            //GAME PALETTE
+                var gGAME_PALETTE = [];
+                gGAME_PALETTE[0] = "rgb(178,188,138)";
+                gGAME_PALETTE[1] = "rgb(140,162,121)";
+                gGAME_PALETTE[2] = "rgb(92, 110, 86)";
+                gGAME_PALETTE[3] = "rgb(73, 87, 68)";
+            //END
 
+            //GAME FONT
+                gGAME_FONT = {
+                    "dither": "101010010101101010010101101010010101",
+                    "0": "011100110010101010100110011100000000",
+                    "1": "001000011000001000001000011100000000",
+                    "2": "011100000010001110010000011110000000",
+                    "3": "011110000010001100000010011100000000",
+                    "4": "010010010010011110000010000010000000",
+                    "5": "011110010000011100000010011100000000",
+                    "6": "001110010000011110010010011110000000",
+                    "7": "011110000010000100001000001000000000",
+                    "8": "011110010010001100010010011110000000",
+                    "9": "001110010010011110000010011100000000",
+                    "a": "011100100010111110100010100010000000",
+                    "b": "111100100010111100100010111110000000",
+                    "c": "111110100000100000100000111110000000",
+                    "d": "111100100010100010100010111100000000",
+                    "e": "111110100000111100100000111110000000",
+                    "f": "111110100000111100100000100000000000",
+                    "g": "011110100000101110100010011100000000",
+                    "h": "100010100010111110100010100010000000",
+                    "i": "111110001000001000001000111110000000",
+                    "j": "001110000100000100100100011000000000",
+                    "k": "100010100100111000100100100010000000",
+                    "l": "100000100000100000100000111110000000",
+                    "m": "110110101010101010101010100010000000",
+                    "n": "110010101010101010100110100010000000",
+                    "o": "011100100010100010100010011100000000",
+                    "p": "111100100010111110100000100000000000",
+                    "q": "011100100010100010100100011010000000",
+                    "r": "111100100010111100100010100010000000",
+                    "s": "011110100000011100000010111100000000",
+                    "t": "111110001000001000001000001000000000",
+                    "u": "100010100010100010100010111110000000",
+                    "v": "100010100010010100001000001000000000",
+                    "w": "100010101010101010110110010100000000",
+                    "x": "100010010100001000010100100010000000",
+                    "y": "100010100010111110000010111110000000",
+                    "z": "111110000100001000010000111110000000",
+                    " ": "000000000000000000000000000000000000",
+                    "?": "111000001000011000000000010000000000",
+                    ".": "000000000000000000000000010000000000",
+                    "!": "010000010000010000000000010000000000",
+                    ",": "000000000000000000000000010000100000",
+                    "'": "010000010000000000000000000000000000",
+                    "@": "011100100010101110101010010110000000",
+                    "#": "010100111110010100111110010100000000",
+                    "$": "011110101000111110001010111110001000",
+                    "%": "110010100100001000010010100110000000",
+                    "^": "001000010100100010000000000000000000",
+                    "&": "011000101000110010101100111000000000",
+                    "*": "000000010100001000010100000000000000",
+                    "(": "000100001000001000001000001000000100",
+                    ")": "001000000100000100000100000100001000",
+                    "-": "000000000000011110000000000000000000",
+                    "=": "000000011110000000011110000000000000",
+                    "_": "000000000000000000000000000000111111",
+                    "+": "000000001000011100001000000000000000",
+                    "[": "001100001000001000001000001000001100",
+                    "]": "001100000100000100000100000100001100",
+                    "{": "001100001000001000010000001000001100",
+                    "}": "001100000100000100000010000100001100",
+                    "/": "000000000010000100001000010000000000",
+                    "\\": "000000010000001000000100000010000000",
+                    "|": "001000001000001000001000001000001000",
+                    ":": "000000010000000000010000000000000000",
+                    ";": "000000010000000000010000100000000000",
+                    "\"": "010100010100000000000000000000000000",
+                    "<": "000000000110011000000110000000000000",
+                    ">": "000000011000000110011000000000000000",
+                    "~": "000000011010010110000000000000000000",
+                    "`": "010000001000000000000000000000000000"
+                };
+            //END
+
+
+            //***********************************************************************************************
+            //INTERNAL ENGINE FUNCTIONS 
+
+                function plotChar(px,py,char,color) {
+                    var sprite = gGAME_FONT[char] || gGAME_FONT["?"];
+                    var count = 0;
+                    var dx = px;
+                    var dy = py;
+                    for (var i = 0; i < 36; i += 1) {
+                        if (sprite[i] == "1") {
+                            plot(color,dx,dy);
+                        }
+                        dx += 1;
+                        count += 1;
+                        if (count == 6) {
+                            dy += 1;
+                            dx = px;
+                            count = 0;
+                        }
+                    }
+                }
+
+            //END
+            //***********************************************************************************************
+
+            window.text = function text(color, x, y, value) {
+                var letterSize = 6;
+                value = String(value);
+                value = value.toLowerCase();
+                for (var i = 0; i < value.length; i += 1) {
+                    plotChar(x,y,value[i],color);
+                    x += letterSize;
+                }
+            };
+
+            window.animate = function animate(array,speed) {
+                var frm = gFRAME_TICKS[speed] % array.length;
+                return array[frm];
+            };
+
+            window.sprite = function sprite(x,y,spr) {
+                var dx = 0;
+                var dy = 0;
+                for(var row = 0; row < spr.length; row += 1) {
+                    data = spr[row];
+                    for (var col = 0; col < data.length; col += 1) {
+                        if (data[col] != "0") {
+                            dx = x + col;
+                            dy = y + row;
+                            plot(data[col],dx,dy);
+                        }
+                    }
+                }
+            };
+
+            window.plot = function plot(color,x,y) {
+                gHTML_BUFFER+= `<div class="pixel c${color}" style="top:${y}%; left:${x}%;"></div>`;
+            };
+
+            window.rect = function rect(color,x,y,w,h) {
+                gHTML_BUFFER += `<div class="pixel c${color}" style="top:${y}%; left:${x}%; width:${w}%; height:${h}%;"></div>`;
+            };
+
+            window.clear = function clear() {
+                geScreen.innerHTML = "";
+                gHTML_BUFFER = "";
+            };
+
+            window.flip = function flip() {
+                geScreen.innerHTML = gHTML_BUFFER;
+            };
+
+            window.rand = function rand(max) {
+                max = max || 100;
+                return Math.floor(Math.random() * max);
+            };
+
+            window.save = function save(name,value) {
+                window.localStorage[name] = value;
+            };
+
+            window.load = function load(name) {
+                return window.localStorage[name];
+            };
+
+            window.dist = function dist(x1,y1,x2,y2) {
+                var dx = x2-x1;
+                var dy = y2-y1;
+                var ratio = (dy*dy) + (dx*dx);
+                return Math.sqrt(ratio);
+            };
+
+            window.inside = function inside(px,py, rx, ry, rw, rh) {
+                return (px > rx) && (px < (rx + rw)) && (py > ry) && (py < (ry+rh));
+            };
+
+            window.overlap = function overlap(x1,y1,w1,h1,x2,y2,w2,h2) {
+                
+                if (inside(x1,y1,x2,y2,w2,h2)) {
+                    return true;
+                } else if (inside(x1+w1,y1,x2,y2,w2,h2)) {
+                    return true;
+                } else if (inside(x1,y1+h1,x2,y2,w2,h2)) {
+                    return true;
+                } else if (inside(x1+w1,y1+h1,x2,y2,w2,h2)) {
+                    return true;
+                }
+                return false;
+            };
+
+            window.pressed = function pressed(buttonId) {
+                
+                return gBUTTONS[buttonId] == true;
+            };
+            
+            window.gameEngineEventHandlers = {};
+
+            window.gameEngineEventHandlers.DPadTouchEnd = function DPadTouchEnd(ev) {
+                gBUTTONS['up'] = false;
+                gBUTTONS['left'] = false;
+                gBUTTONS['right'] = false;
+                gBUTTONS['down'] = false;
+            };
+
+            window.gameEngineEventHandlers.DPadRegisterButton = function DPadRegisterButton(ev) {
+                var e = ev || window.event;
+                var x = e.targetTouches[0].pageX;
+                var y = e.targetTouches[0].pageY;
+                var dpadRect = document.getElementById("geDPad").getBoundingClientRect();
+                var gridW = dpadRect.width/5;
+                var gridH = dpadRect.height/5;
+                var gridX = Math.floor((x-dpadRect.x) / gridW);
+                var gridY = Math.floor((y-dpadRect.y) / gridH);
+
+                gBUTTONS['up'] = gridY < 2 && gridY >= 0;
+                gBUTTONS['left'] = gridX < 2 && gridX >= 0;
+                gBUTTONS['right'] = gridX > 2 && gridX < 5;
+                gBUTTONS['down'] = gridY > 2 && gridY < 5;
+            };
+
+            window.gameEngineEventHandlers.registerButton = function registerButton(btn1) {
+                gBUTTONS[btn1] = true;
+            };
+
+            window.gameEngineEventHandlers.unregisterButton = function(btn1) {
+                gBUTTONS[btn1] = false;
+            };
+
+            
+
+        }(window));
+
+        var px = 0;
+        var py = 0;
+        
 
         var test = [
             "00111100",
@@ -158,122 +423,31 @@
             "00333300"
         ];
 
-        function sprite(x,y,spr) {
-            var dx = 0;
-            var dy = 0;
-            for(var row = 0; row < spr.length; row += 1) {
-                data = spr[row];
-                for (var col = 0; col < data.length; col += 1) {
-                    if (data[col] != "0") {
-                        dx = x + col;
-                        dy = y + row;
-                        plot(dx,dy, data[col]);
-                    }
-                }
-            }
-        }
 
-        function plot(x,y,color) {
-            gHTML_BUFFER+= `<div class="pixel c${color}" style="top:${y}%; left:${x}%;"></div>`;
-        }
-
-        function rect(color,x,y,w,h) {
-            gHTML_BUFFER += `<div class="pixel c${color}" style="top:${y}%; left:${x}%; width:${w}%; height:${h}%;"></div>`;
-        }
-
-        function clear() {
-            geScreen.innerHTML = "";
-            gHTML_BUFFER = "";
-        }
-
-        function flip() {
-            geScreen.innerHTML = gHTML_BUFFER;
-        }
-
-        function inside(px,py, rx, ry, rw, rh) {
-            return (px > rx) && (px < (rx + rw)) && (py > ry) && (py < (ry+rh));
-        };
-
-        function DPadTouchEnd(ev) {
-            gBUTTONS['up'] = false;
-            gBUTTONS['left'] = false;
-            gBUTTONS['right'] = false;
-            gBUTTONS['down'] = false;
-        }
-
-
-        function DPadRegisterButton(ev) {
-            var e = ev || window.event;
-            var x = e.targetTouches[0].pageX;
-            var y = e.targetTouches[0].pageY;
-            var dpadRect = document.getElementById("geDPad").getBoundingClientRect();
-            var gridW = dpadRect.width/5;
-            var gridH = dpadRect.height/5;
-            var gridX = Math.floor((x-dpadRect.x) / gridW);
-            var gridY = Math.floor((y-dpadRect.y) / gridH);
-
-            gBUTTONS['up'] = gridY < 2 && gridY >= 0;
-            gBUTTONS['left'] = gridX < 2 && gridX >= 0;
-            gBUTTONS['right'] = gridX > 2 && gridX < 5;
-            gBUTTONS['down'] = gridY > 2 && gridY < 5;
-        }
-
-        function buttonRegister(btn1,btn2) {
-            gBUTTONS[btn1] = true;
-            if (btn2) { gBUTTONS[btn2] = true; }
-        }
-        function buttonUnregister(btn1,btn2) {
-            gBUTTONS[btn1] = false;
-            if (btn2) { gBUTTONS[btn2] = false; }
-        }
-
-        function buttonCheckStatus(ev, id, btn1, btn2) {
-            var e = ev || window.event;
-            var cx = e.targetTouches[0].pageX;
-            var cy = e.targetTouches[0].pageY;
-            var btnRect = document.getElementById(id).getBoundingClientRect();
-            var rx = btnRect.left || btnRect.x;
-            var ry = btnRect.top || btnRect.y;
-            var rw = btnRect.width;
-            var rh = btnRect.height;
-            var isInside = inside(cx,cy,rx,ry,rw,rh);
-
-            if (isInside) {
-                buttonRegister(btn1,btn2);
-            } else {
-                buttonUnregister(btn1,btn2);
-            }
-        }
-
-        function isButton(btn1,btn2) {
-            if (btn1 && btn2) {
-                return gBUTTONS[btn1] == true && gBUTTONS[btn2] == true;
-            }
-            return gBUTTONS[btn1] == true;
-        }
-
-        var px = 0;
-        var py = 0;
         function update() {
             clear();
 
-            if (isButton('up')) {
+            text(3,0,70,"hello world");
+            text(2,0,77,"hello world");
+            text(1,0,84,"hello world");
+
+            if (pressed('up')) {
                 if (py > 0) {
                     py -= 1;
                 }
             }
-            if (isButton('down')) {
+            if (pressed('down')) {
                 if (py < 95) {
                     py += 1;
                 }
             }
 
-            if (isButton('left')) {
+            if (pressed('left')) {
                 if (px > 0) {
                     px -= 1;
                 }
             }
-            if (isButton('right')) {
+            if (pressed('right')) {
                 if (px < 95) {
                     px += 1;
                 }
