@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        * {
+            margin:0px;
+            padding:0px;
+            box-sizing: border-box;
+        }
+        body {
+            background:rgb(225,220,220);
+        }
+        .screen {
+            position:absolute;
+            top:5%;
+            height:44%;
+            left:10%;
+            right:10%;
+            background:rgb(178,188,138);
+            overflow: hidden;
+        }
+
+        .up-arrow {
+            position: absolute;
+            top: 60%;
+            left: 23%;
+            height: 11%;
+            width: 10%;
+            background: rgb(64,64,64);
+        }
+
+
+        .down-arrow {
+            position: absolute;
+            top: 80%;
+            left: 23%;
+            height: 11%;
+            width: 10%;
+            background: rgb(64,64,64);
+        }
+
+        .left-arrow {
+            position: absolute;
+            top: 73%;
+            left: 2%;
+            height: 5.5%;
+            width: 19%;
+            background: rgb(64,64,64);
+        }
+
+        .right-arrow {
+            position: absolute;
+            top: 73%;
+            left: 35%;
+            height: 5.5%;
+            width: 19%;
+            background: rgb(64,64,64);
+        }
+
+        .menu-button {
+            position: absolute;
+            top:93%;
+            left:45%;
+            width:15%;
+            height:4.5%;
+            background:rgb(64,64,64);
+            border-radius: 12%;
+        }
+        .button-A {
+            position:absolute;
+            top:60%;
+            left:75%;
+            width:16%;
+            height:9%;
+            border-radius: 50%;
+            background:rgb(128,30,50);
+        }
+        .button-B {
+            position:absolute;
+            top:75%;
+            left:75%;
+            width:16%;
+            height:9%;
+            border-radius: 50%;
+            background:rgb(128,30,50);
+        }
+
+        .pixel {
+            position:absolute;
+            width:2%;
+            height:2%;
+            background:rgb(92, 110, 86);
+            font-size:0px;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+    <div id="geScreen" class="screen">
+        <div class="pixel" style="top:0%; left:0%;"></div>
+        <div class="pixel" style="top:0%; left:2%;"></div>
+        <div class="pixel" style="top:2%; left:2%;"></div>
+    </div>
+
+    <div id="geButtonUp" class="up-arrow"> </div>
+    <div id="geButtonDown" class="down-arrow"> </div>
+    <div id="geButtonLeft" class="left-arrow"> </div>
+    <div id="geButtonRight" class="right-arrow"> </div>
+
+    <div id="geButtonMenu" class="menu-button"></div>
+    <div id="geButtonA" class="button-A"></div>
+    <div id="geButtonB" class="button-B"></div>
+
+    <script>
+        function plotChar(x,y,c) {
+            switch(c) {
+                case "a" :  
+                    rect(x,y+1,1,4);
+                    rect(x,y,3,1);
+                    rect(x+2,y+1,1,4);
+                    rect(x+1,y+2,1,1);
+            }
+        }
+
+        function rect(x,y,w,h) {
+            geScreen.innerHTML += `<div class="pixel" style="top:${y*2}%; left:${x*2}%; width:${w*2}%; height:${h*2}%;"></div>`;
+        }
+
+        function floodPixels() {
+            var html = "";
+            for (var x = 0; x < 50; x += 1) {
+                for (var y = 0; y < 50; y += 1) {
+                    html += `<div class="pixel" style="top:${(y*2)}%; left:${x*2}%"></div>`;
+                }
+            }
+            geScreen.innerHTML = html;
+        }
+
+        var px = 0;
+        var py = 0;
+        function update() {
+            geScreen.innerHTML = "";
+
+            plotChar(px,py,"a");
+            px += 6;
+            if (px > 50) {
+                px = 0;
+                py += 6;
+                if (py > 50) {
+                    py = 0;
+                }
+            }
+            
+            requestAnimationFrame(update);
+        }
+
+        setTimeout(function() {
+            //update();
+        },100);
+    </script>
+
+</body>
+</html>
