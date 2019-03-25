@@ -12,8 +12,18 @@
             box-sizing: border-box;
         }
         body {
-            background:rgb(225,220,220);
+            background:black;
             overscroll-behavior: none;
+        }
+
+        .system-container {
+            position:absolute;
+            top:0px;
+            left:0px;
+            right:0px;
+            bottom:0px;
+            font-size: 0px;
+            background:rgb(225,220,220);
         }
 
         .screen-canvas {
@@ -25,6 +35,7 @@
             background:transparent;
             overflow: hidden;
             z-index: 501;
+            image-rendering: pixelated;
         }
 
         .screen-glass {
@@ -56,6 +67,7 @@
                 left:40%;
                 width:20%;
                 background:rgb(64,64,64);
+                border-radius: 7%;
             }
 
             .directional-pad-left-right {
@@ -65,19 +77,31 @@
                 left:20%;
                 right:20%;
                 background:rgb(64,64,64);
+                border-radius: 7%;
             }
 
         /*END*/
 
-        .menu-button {
+        .select-button {
             position: absolute;
             top:93%;
-            left:45%;
+            left:30%;
             width:15%;
             height:4.5%;
             background:rgb(64,64,64);
             border-radius: 12%;
         }
+
+        .start-button {
+            position: absolute;
+            top:93%;
+            right:30%;
+            width:15%;
+            height:4.5%;
+            background:rgb(64,64,64);
+            border-radius: 12%;
+        }
+
         .button-A {
             position:absolute;
             top:63%;
@@ -132,28 +156,157 @@
         }
 
 
+        .system-controls {
+            position: absolute;
+            box-sizing: border-box;
+            margin:0px;
+            padding:0px;
+            width:192px;
+            height:128px;
+            font-size:12px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color:rgb(128,128,128);
+        }
+        .help-display-dpad-up {
+            position: absolute;
+            box-sizing: border-box;
+            margin:0px;
+            padding:0px;
+            top:0px;
+            left:32px;
+            width:20px;
+            height:32px;
+            border: 1px solid rgb(16,16,16);
+            background:rgb(16,16,16);
+            border-radius: 1px;
+            color:rgb(128,128,128);
+            line-height:32px;
+            text-align: center;
+        }
+        .help-display-dpad-left {
+            position: absolute;
+            box-sizing: border-box;
+            margin:0px;
+            padding:0px;
+            top:32px;
+            left:0px;
+            width:32px;
+            height:20px;
+            border: 1px solid rgb(16,16,16);
+            background:rgb(16,16,16);
+            color:rgb(128,128,128);
+            line-height:18px;
+            text-align: center;
+        }
+        .help-display-dpad-down {
+            position: absolute;
+            box-sizing: border-box;
+            margin:0px;
+            padding:0px;
+            top:52px;
+            left:32px;
+            width:20px;
+            height:32px;
+            border: 1px solid rgb(16,16,16);
+            background:rgb(16,16,16);
+            color:rgb(128,128,128);
+            line-height:32px;
+            text-align: center;
+        }
+        .help-display-dpad-right {
+            position: absolute;
+            box-sizing: border-box;
+            margin:0px;
+            padding:0px;
+            top:32px;
+            left:52px;
+            width:32px;
+            height:20px;
+            border: 1px solid rgb(16,16,16);
+            background:rgb(16,16,16);
+            color:rgb(128,128,128);
+            line-height:18px;
+            text-align: center;
+        }
+        .help-display-menu-button {
+            position: absolute;
+            box-sizing: border-box;
+            margin:0px;
+            padding:0px;
+            width:32px;
+            height:16px;
+            border: 1px solid rgb(16,16,16);
+            border-radius: 12%;
+            background:rgb(16,16,16);
+            color:rgb(128,128,128);
+            line-height:14px;
+            text-align: center;
+        }
+        .help-display-button {
+            position: absolute;
+            box-sizing: border-box;
+            margin:0px;
+            padding:0px;
+            width:34px;
+            height:34px;
+            border-radius:50%;
+            border: 1px solid rgb(32,32,32);
+            background:rgb(16,16,16);
+            color:rgb(128,128,128);
+            line-height:32px;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
-    <div id="versionNum" style="position:absolute; bottom:0px; right:0px; color:blue; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
-        5
+    <div id="geSystemControls_A" class="system-controls" style="bottom:16px; left:16px;">
+        <div class="help-display-dpad-up">W</div>
+        <div class="help-display-dpad-left">A</div>
+        <div class="help-display-dpad-down">S</div>
+        <div class="help-display-dpad-right">D</div>
+
+        <div class="help-display-menu-button" style="top:100px; left:64px;">U</div>
+        <div class="help-display-menu-button" style="top:100px; left:120px;">I</div>
+
+        <div class="help-display-button" style="top:40px; left:130px;">O</div>
+        <div class="help-display-button" style="top:0px; left:160px;">P</div>
     </div>
 
-    <canvas id="geScreenCanvas" class="screen-canvas" width=100 height=100> </canvas>
-    <div id="geScreenGlass" class="screen-glass"> </div>
+    <div id="geSystemControls_B" class="system-controls" style="bottom:16px; right:16px;">
+        <div class="help-display-dpad-up" style="font-family:'Webdings';">5</div>
+        <div class="help-display-dpad-left" style="font-family:'Webdings';">3</div>
+        <div class="help-display-dpad-down" style="font-family:'Webdings';">6</div>
+        <div class="help-display-dpad-right" style="font-family:'Webdings';">4</div>
 
-    <div id="geDPad" class="directional-pad">
-        <div id="geDPadUpDown" class="directional-pad-up-down"></div>
-        <div id="geDPadLeftRight" class="directional-pad-left-right"></div>
+        <div class="help-display-menu-button" style="top:100px; left:64px;">C</div>
+        <div class="help-display-menu-button" style="top:100px; left:120px;">V</div>
+
+        <div class="help-display-button" style="top:40px; left:130px;">Z</div>
+        <div class="help-display-button" style="top:0px; left:160px;">X</div>
     </div>
 
-    <div id="geButtonMenu" class="menu-button"> </div>
-    <div id="geButtonA" class="button-A">A</div>
-    <div id="geButtonB" class="button-B">B</div>
+    <div id="geSystemContainer" class="system-container">
+        <div id="versionNum" style="position:absolute; bottom:0px; right:0px; color:blue; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+            6
+        </div>
+
+        <canvas id="geScreenCanvas" class="screen-canvas" width=100 height=100> </canvas>
+        <div id="geScreenGlass" class="screen-glass"> </div>
+
+        <div id="geDPad" class="directional-pad">
+            <div id="geDPadUpDown" class="directional-pad-up-down"></div>
+            <div id="geDPadLeftRight" class="directional-pad-left-right"></div>
+        </div>
+        <div id="geButtonsPanel">
+            <div id="geButtonSelect" class="select-button"> </div>
+            <div id="geButtonStart" class="start-button"> </div>
+            <div id="geButtonA" class="button-A">A</div>
+            <div id="geButtonB" class="button-B">B</div>    
+        </div>
+    </div>
     
     <script>
         (function loadGameEngine(win) {
-
 
             //***********************************************************************************************
             //INTERNAL ENGINE COMPONENTS
@@ -165,15 +318,66 @@
 
                 //END
                     
+                //ENGINE CONSTANTS **********************
+
+                    var KEY_W = 87; //UP button
+                    var KEY_A = 65; //LEFT button
+                    var KEY_S = 83; //DOWN button
+                    var KEY_D = 68; //RIGHT button
+                    
+                    var KEY_U = 85; // Select button
+                    var KEY_I = 73; // Start Button
+                    var KEY_O = 79; // B Button
+                    var KEY_P = 80; // A Button
+
+                    var KEY_Z = 90; // B button
+                    var KEY_X = 88; // A button
+                    var KEY_C = 67; // Select button
+                    var KEY_V = 86; // Start button
+                    
+                    var KEY_UP_ARROW = 38; //Up Button
+                    var KEY_DOWN_ARROW = 40; // Down button
+                    var KEY_LEFT_ARROW = 37; // Left button
+                    var KEY_RIGHT_ARROW = 39; //Right button
+
+                    var gKEYBOARD_TO_BUTTON = [];
+
+                    gKEYBOARD_TO_BUTTON[KEY_W] = "up";
+                    gKEYBOARD_TO_BUTTON[KEY_A] = "left";
+                    gKEYBOARD_TO_BUTTON[KEY_S] = "down";
+                    gKEYBOARD_TO_BUTTON[KEY_D] = "right";
+
+                    gKEYBOARD_TO_BUTTON[KEY_U] = "select";
+                    gKEYBOARD_TO_BUTTON[KEY_I] = "start";
+                    gKEYBOARD_TO_BUTTON[KEY_O] = "b";
+                    gKEYBOARD_TO_BUTTON[KEY_P] = "a";
+
+                    gKEYBOARD_TO_BUTTON[KEY_UP_ARROW] = "up";
+                    gKEYBOARD_TO_BUTTON[KEY_LEFT_ARROW] = "left";
+                    gKEYBOARD_TO_BUTTON[KEY_DOWN_ARROW] = "down";
+                    gKEYBOARD_TO_BUTTON[KEY_RIGHT_ARROW] = "right";
+
+                    gKEYBOARD_TO_BUTTON[KEY_Z] = "b";
+                    gKEYBOARD_TO_BUTTON[KEY_X] = "a";
+                    gKEYBOARD_TO_BUTTON[KEY_C] = "select";
+                    gKEYBOARD_TO_BUTTON[KEY_V] = "start";
+
+
+                //END
+
                 //ENGINE GLOBALS *************************
                     var gGAME_LOOP_INTERVAL;
                     var gGAME_LOOP_FREQ = 16; //16 millisecs
                     var gCONTEXT_2D;
                     var gFRAME_TICK = 0;
                     var gTICK = 0;
+                    var gGAME_PAD_ENABLED = false;
+                    var gGAME_INPUT_INTERVAL;
+                    var gGAME_INPUT_FREQUENCY = 100; // 200 millisecs (5 times a second)
+                    var gGAME_INPUT_COLLECTED = false;
+
                     var gFRAME_TICKS = [0,0,0,0,0,0,0,0,0,0];
-                    var gKEY_DOWNS = {};
-                    var gKEY_UPS = {};
+                    var gBUTTON_PRESSED = {};
                     var gBUTTON_DOWNS = {};
                     var gBUTTON_UPS = {};
                 //END
@@ -394,46 +598,129 @@
                         byId("geButtonB").addEventListener("touchstart",handleButtonDown);
                         byId("geButtonB").addEventListener("touchend",handleButtonUp);
 
-                        byId("geButtonMenu").addEventListener("touchstart",handleButtonDown);
-                        byId("geButtonMenu").addEventListener("touchend",handleButtonUp);
+                        byId("geButtonSelect").addEventListener("touchstart",handleButtonDown);
+                        byId("geButtonSelect").addEventListener("touchend",handleButtonUp);
+
+                        byId("geButtonStart").addEventListener("touchstart",handleButtonDown);
+                        byId("geButtonStart").addEventListener("touchend",handleButtonUp);
 
                     }
 
                     function initGraphicsContext() {
                         gCONTEXT_2D = byId("geScreenCanvas").getContext("2d");
+                        gCONTEXT_2D.webkitImageSmoothingEnabled = false;
+                        gCONTEXT_2D.mozImageSmoothingEnabled = false;
+                        gCONTEXT_2D.imageSmoothingEnabled = false; 
                     }
 
                     function cancelEvent(ev) {
-                        if (ev.stopPropagation) {
-                            ev.stopPropagation();
+                        try {
+                            if (ev.stopPropagation) {
+                                ev.stopPropagation();
+                            }
+                            if (ev.preventDefault) {
+                                ev.preventDefault();
+                            }
+                            ev.cancelBubble = true;
+                        } catch (er) {
+                            console.log("cancelEvent -> " + er.message);
                         }
-                        if (ev.preventDefault) {
-                            ev.preventDefault();
-                        }
-                        ev.cancelBubble = true;
                         return false;
+                    }
+
+                    function registerGamePad() {
+                       
+                        var buttons;
+                        var info = navigator.getGamepads()[0];
+                        var buttonCheck = function (gamePadButtonIndex, engineButtonName) {
+                            if (buttons[gamePadButtonIndex].pressed) {
+                                gBUTTON_DOWNS[engineButtonName] = true;
+                            } else if (gBUTTON_DOWNS[engineButtonName] == true) {
+                                gBUTTON_DOWNS[engineButtonName] = false;
+                                gBUTTON_UPS[engineButtonName] = true;
+                            }
+                        };
+
+                        if (info == undefined) { 
+                            return;
+                        }
+
+                        buttons = info.buttons;
+                        
+                        //If we're not pad-enabled, then see if a user is mashing it. 
+                        //if so, then enable the game pad and return, otherwise we're already
+                        //enabled so we can just check the buttons
+                        if (gGAME_PAD_ENABLED == false) {
+                            for(var i = 0; i < buttons.length; i += 1) {
+                                if (buttons[i].pressed) {
+                                    gGAME_PAD_ENABLED = true;
+                                    break;
+                                }
+                            }
+                        } else {
+                            buttonCheck(12,"up");
+                            buttonCheck(13,"down");
+                            buttonCheck(14,"left");
+                            buttonCheck(15,"right");
+                            buttonCheck(8,"select");
+                            buttonCheck(9,"start");
+                            buttonCheck(0,"b");
+                            buttonCheck(1,"a");
+                        }
+                        delete info;
+                    }
+
+                    function registerKeyPresses() {
+                        var btnName = "";
+                        var buttons = ["up","down","left","right","select","start","a","b"];
+                        for (var i = 0; i < buttons.length; i += 1) {
+                            btnName = buttons[i];
+                            if(gBUTTON_PRESSED[btnName] == undefined) {
+                                gBUTTON_PRESSED[btnName] == 0;
+                            }
+                            gBUTTON_PRESSED[btnName] += gBUTTON_DOWNS[btnName] ? 1 : 0
+                        }
                     }
 
                     function handleKeyDown(e) {
                         var ev = e || window.event;
                         var key = ev.keyCode;
-                        gKEY_DOWNS[key] = 1;
+                        var keyName = gKEYBOARD_TO_BUTTON[key];
+                        
+                        gGAME_PAD_ENABLED = false;
+                        
+                        if (keyName != undefined) {
+                            gBUTTON_DOWNS[keyName] = true;
+                        }
                         return cancelEvent(ev);
                     }
 
                     function handleKeyUp(e) {
                         var ev = e || window.event;
                         var key = ev.keyCode;
-                        gKEY_UPS[key] = 1;
-                        gKEY_DOWNS[key] = undefined;
+                        var keyName = gKEYBOARD_TO_BUTTON[key];
+                        gGAME_PAD_ENABLED = false;
+
+                        if (keyName != undefined) {
+                            gBUTTON_PRESSED[keyName] = 0;
+                            gBUTTON_DOWNS[keyName] = false;
+                            gBUTTON_UPS[keyName] = true;
+                        }
+                        
                         return cancelEvent(ev);
                     }
 
                     function handleDPadUp(ev) {
-                        gBUTTON_DOWNS['up'] = false;
-                        gBUTTON_DOWNS['left'] = false;
-                        gBUTTON_DOWNS['right'] = false;
-                        gBUTTON_DOWNS['down'] = false;
+                        
+                        var list = ['up','left','right','down'];
+                        var btn = "";
+                        gGAME_PAD_ENABLED = false;
+                        for(var i = 0; i < list.length; i += 1) {
+                            btn = list[i];
+                            gBUTTON_UPS[btn] = gBUTTON_DOWNS[btn];
+                            gBUTTON_DOWNS[btn] = false;
+                            gBUTTON_PRESSED[btn] = 0;
+                        }
                     }
 
                     function handleDPadDown(ev) {
@@ -445,7 +732,7 @@
                         var gridH = dpadRect.height/5;
                         var gridX = Math.floor((x-dpadRect.x) / gridW);
                         var gridY = Math.floor((y-dpadRect.y) / gridH);
-
+                        gGAME_PAD_ENABLED = false;
                         gBUTTON_DOWNS['up'] = gridY < 2 && gridY >= 0;
                         gBUTTON_DOWNS['left'] = gridX < 2 && gridX >= 0;
                         gBUTTON_DOWNS['right'] = gridX > 2 && gridX < 5;
@@ -459,6 +746,7 @@
                         var id = e.target.id;
                         var btn = id.substring(id.indexOf("Button")+6).toLowerCase();
                         cancelEvent(e);
+                        gGAME_PAD_ENABLED = false;
                         gBUTTON_DOWNS[btn] = true;
                         gBUTTON_UPS[btn] = false;
                     }
@@ -468,6 +756,7 @@
                         var id = e.target.id;
                         var btn = id.substring(id.indexOf("Button")+6).toLowerCase();
                         cancelEvent(e);
+                        gGAME_PAD_ENABLED = false;
                         gBUTTON_DOWNS[btn] = false;
                         gBUTTON_UPS[btn] = true;
                     }
@@ -475,11 +764,21 @@
                     function startGameLoop() {
                                                 
                         if (typeof window.gameLoop == "function") {
+
+
+                            gGAME_INPUT_INTERVAL = setInterval(function() {
+                                registerGamePad();
+                                registerKeyPresses();
+                                gGAME_INPUT_COLLECTED = true;
+                            },gGAME_INPUT_FREQUENCY);
+
                             gGAME_LOOP_INTERVAL = setInterval(function() {
                                 updateTicks();
                                 window.gameLoop();
-                                gBUTTON_UPS = {};
-                                gKEY_UPS = {};
+                                if (gGAME_INPUT_COLLECTED == true) {
+                                    gBUTTON_UPS = {};
+                                    gGAME_INPUT_COLLECTED = false;
+                                }
                             },gGAME_LOOP_FREQ);
                         }    
                     }
@@ -598,9 +897,38 @@
                         gTICK += 1;
                     }
 
+                    function updateScreenSize() {
+                        var winW = window.innerWidth;
+                        var winH = window.innerHeight;
+                        var width = "100%";
+                        var height = "100%";
+                        var top = "0px";
+                        var left = "0px";
+                        var elem = byId("geSystemContainer");
+                        var isMobile = (typeof window.orientation !== "undefined") ||
+                            (navigator.userAgent.indexOf('IEMobile') !== -1);
+
+                        if (!isMobile) {
+                            height = (winH-20);
+                            top = 10;
+                            width = (height/1.8);
+                            left = (winW-width)/ 2;
+                            top += "px";
+                            left += "px";
+                            width += "px";
+                            height += "px";
+                        }
+
+                        elem.style.width = width;
+                        elem.style.height = height;
+                        elem.style.top = top;
+                        elem.style.left = left;
+                    }
+
                     window.onload = function () {
                         attachGlobalEvents();
                         initGraphicsContext();
+                        updateScreenSize();
                         startGameLoop();
                     };
 
@@ -631,6 +959,10 @@
                         var img = new Image();
                         img.src = canvas.toDataURL("image/png");
                         return img;
+                    };
+
+                    window.onresize = function () {
+                        updateScreenSize();
                     };
 
                     function updateTicks() {
@@ -701,7 +1033,7 @@
 
                 window.sprite = function sprite (x,y,spriteName) {
                     var sprite = window.gSPRITES["sprite_" + spriteName];
-                    gCONTEXT_2D.drawImage(sprite,x* gSCREEN_ZOOM,y* gSCREEN_ZOOM);
+                    gCONTEXT_2D.drawImage(sprite,x,y);
                 };
 
                 window.plot = function plot(color,x,y) {
@@ -713,14 +1045,6 @@
                     gCONTEXT_2D.fillStyle = gGAME_PALETTE[color];
                     gCONTEXT_2D.fillRect(x,y,w,h);
                 };
-
-                window.setBuffer = function (bufferIndex) {
-                    if (bufferIndex == 0) {
-                        gHTML_BUFFER_TARGET = "geScreenBackground";
-                    } else if (bufferIndex == 1) {
-                        gHTML_BUFFER_TARGET = "geScreenForeground";
-                    }
-                }
 
                 window.clear = function clear() {
                     rect(0,0,0,100,100);
@@ -764,23 +1088,20 @@
                     return false;
                 };
 
-                window.buttonDown = function buttonDown(buttonId) {
+                
+
+                window.pressed = function pressed(buttonId) {
                     
+                    return gBUTTON_PRESSED[buttonId] == 1;
+                };
+                
+                window.held = function held(buttonId) {
                     return gBUTTON_DOWNS[buttonId] == true;
                 };
 
-                window.buttonUp = function buttonUp(buttonId) {
+                window.released = function released(buttonId) {
 
                     return gBUTTON_UPS[buttonId] == true;
-                };
-
-                window.keyDown = function keyDown(keyCode) {
-
-                    return gKEY_DOWNS[keyCode] != undefined;
-                };
-
-                window.keyUp = function keyUp(keyCode) {
-                    return gKEY_UPS[keyCode] != undefined;
                 };
                 
                 window.play = function play(name) {
@@ -807,58 +1128,67 @@
             //***********************************************************************************************
 
         }(window));
+    </script>
+    <div id="$ge_gameProjectData" style="display:none">
+    //[BEGIN-PROJECT]
+eyJuYW1lIjoibmV3X2dhbWVfcHJvamVjdCIsInNvdW5kcyI6W3sibmFtZSI6ImZvbyIsIm5vdGVzIjpbIkE0IiwiQTUiLCJCMyIsIkQzIiwiLSIsIkIyIl0sIm9wdGlvbnMiOnsic3BlZWQiOiI1IiwibG9vcCI6Im9mZiIsInZvaWNlIjoic3F1YXJlIiwidm9sdW1lIjoiMSJ9fSx7Im5hbWUiOiJibGlwIiwibm90ZXMiOlsiQTQiXSwib3B0aW9ucyI6eyJzcGVlZCI6IjYiLCJsb29wIjoib2ZmIiwidm9pY2UiOiJzYXd0b290aCIsInZvbHVtZSI6IjIifX1dLCJpbWFnZXMiOlt7Im5hbWUiOiJ0ZXN0IiwiaW1hZ2VUZXh0IjoiMTYsMTYsMCwwMDMzMzMzMzMwMDAwMDAwMDAwMDAwMDAzMzMwMDAwMDAwMDAwMDAzMDAzMDMwMDAwMDMwMzMzMDAzMzAwMzAwMDAzMDMzMzMzMzAzMDMwMDAwMzAzMzMzMDMzMDAzMzAwMDMwMDMzMzMwMzAwMzMzMDAzMDMwMzMzMDAwMDAzMzAwMzAzMzMzMzMzMDMzMzAwMDMwMDMwMzMzMzAwMDMwMDAwMzMzMDAwMzMzMzMwMDAwMDMzMzMzMzMzMzMzMDAwMDAwMDAwMDAzMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwIn0seyJuYW1lIjoidGVzdDIiLCJpbWFnZVRleHQiOiIxNiwxNiwwLDAwMzMzMzMzMzExMDAwMDAwMDAwMDAwMDMxMTAwMDAwMDAxMTEwMTMwMDMxMzAzMDAwMzAxMzExMTEzMDAzMzAwMDMwMTExMTMxMDEwMzMwMDAzMTMxMTMxMTEwMTMzMDAwMzAwMTEzMzAxMDAzMzMwMDMxMTEzMTEwMTAwMDMzMDAzMDExMTMzMzEwMzEzMDAwMzExMzEzMzEzMDExMzAwMDAzMTMxMTAzMzMxMzMwMDAwMTMzMTEzMzMzMzMzMDAwMDAwMDEwMTEwMTAwMzAwMDAwMDAzMzMzMDEwMzEwMDAzMTMzMzMzMDAwMTEzMDAwMDEwMDAwMDAwMDAwMzAiLCJpbmRleCI6Mn0seyJuYW1lIjoiaW1hZ2VfMTM1NTE0NzEwNzMiLCJpbWFnZVRleHQiOiIxNiwxNiwwLDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMzAwMDAwMDAwMDAwMDAwMDMwMDAwMDAwMDAwMDAwMDAwMzMzMzAwMDAwMDAwMDAwMDMzMDMwMDAwMDAwMDAzMzMzMDMwMzAwMDAwMDAwMDAzMzAzMzAwMDAwMDAwMDAwMzMzMDMwMDAwMDAwMDAwMDAwMDAwMzAwMDAwMDAwMDAwMDAwMDMwMDAwMDAwMDAwMDMwMDMzMDAwMDAwMDAwMDAzMzMzMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAifV0sInNjcmlwdHMiOlt7Im5hbWUiOiJNQUlOIiwiY29kZSI6Ikx5OGdibVYzWDJkaGJXVmZjSEp2YW1WamRBb3ZMeUJaTWpBeE9VMHdNMFF4TVY5b01UZHROVFZ6TVRBS0NuWmhjaUJ3ZUNBOUlEQTdDblpoY2lCd2VTQTlJREE3Q2dvS1puVnVZM1JwYjI0Z1oyRnRaVXh2YjNBb0tTQjdDZ29nSUNBZ1kyeGxZWElvTUNrN0NpQWdJQ0IwWlhoMEtETXNNVEFzTVRBc0lraGxiR3h2SUZkdmNteGtJaWs3Q2lBZ0lDQnpjSEpwZEdVb2NIZ3NjSGtzWVc1cGJXRjBaU2hiSW5SbGMzUWlMQ0owWlhOME1pSmRMRE1wS1RzS0NpQWdJQ0JwWmlBb0lHaGxiR1FvSW1SdmQyNGlLU0FwSUhzS0lDQWdJQ0FnSUNCd2VTQXJQU0F4T3dvZ0lDQWdmUW9LSUNBZ0lHbG1JQ2hvWld4a0tDSjFjQ0lwSUNrZ2V3b2dJQ0FnSUNBZ0lIQjVJQzA5SURFN0NpQWdJQ0I5Q2dvZ0lDQWdhV1lnS0dobGJHUW9JbXhsWm5RaUtTQXBJSHNLSUNBZ0lDQWdJQ0J3ZUNBdFBTQXhPd29nSUNBZ2ZRb0tJQ0FnSUdsbUlDaG9aV3hrS0NKeWFXZG9kQ0lwS1NCN0NpQWdJQ0FnSUNBZ2NIZ2dLejBnTVRzS0lDQWdJSDBLQ2dvS0lDQWdJR2xtSUNnZ2NtVnNaV0Z6WldRb0ltRWlLU0FwSUhzS0lDQWdJQ0FnSUNCd2JHRjVLQ0ppYkdsd0lpazdDaUFnSUNBS0lDQWdJSDBLQ24wPSJ9XX0=
+//[END-PROJECT]
 
-        var px = 0;
-        var py = 0;
+    </div>
+    <script>
+    var gSPRITES = {};
+gSPRITES["sprite_test"] = loadSprite("16,16,0,0033333330000000000000003330000000000003003030000030333003300300003033333303030000303333033003300030033330300333003030333000003300303333333033300030030333300030000333000333330000033333333333000000000003000000000000000000000000000000000000000000000000000000");
+gSPRITES["sprite_test2"] = loadSprite("16,16,0,0033333331100000000000003110000000111013003130300030131111300330003011113101033000313113111013300030011330100333003111311010003300301113331031300031131331301130000313110333133000013311333333300000001011010030000000333301031000313333300011300001000000000030");
+gSPRITES["sprite_image_13551471073"] = loadSprite("16,16,0,0000000000000000000000000000000000000000000000000000030000000000000003000000000000000033330000000000003303000000000333303030000000000330330000000000033303000000000000000030000000000000003000000000003003300000000000333300000000000000000000000000000000000000");
+
+    var gSOUNDS = {};
+gSOUNDS["sound_foo"] = { notes:String("A4,A5,B3,D3,-,B2").split(","),options:{"speed":"5", "loop":"off", "voice":"square", "volume":"1"},index:undefined};
+gSOUNDS["sound_blip"] = { notes:String("A4").split(","),options:{"speed":"6", "loop":"off", "voice":"sawtooth", "volume":"2"},index:undefined};
+
+    
+
+//BEGIN: MAIN
+// new_game_project
+// Y2019M03D11_h17m55s10
+
+var px = 0;
+var py = 0;
 
 
-        function gameLoop() {
+function gameLoop() {
 
-            if (buttonDown('up')) {
-                if (py > 0) {
-                    py -= 1;
-                }
-            }
-            if (buttonDown('down')) {
-                if (py < 95) {
-                    py += 1;
-                }
-            }
+    clear(0);
+    text(3,10,10,"Hello World");
+    sprite(px,py,animate(["test","test2"],3));
 
-            if (buttonDown('left')) {
-                if (px > 0) {
-                    px -= 1;
-                }
-            }
-            if (buttonDown('right')) {
-                if (px < 95) {
-                    px += 1;
-                }
-            }
+    if ( held("down") ) {
+        py += 1;
+    }
 
-            setBuffer(1);
-            clear();
-            if (buttonDown('a')) {
-                text(2,15,15,"PRESSED A!");
-            }
-            if (buttonDown('b')) {
-                text(3,15,22,"PRESSED B!");
-            }
-            if (buttonDown('menu')) {
-                text(2,15,29,"PRESSED MENU!");
-            }
+    if (held("up") ) {
+        py -= 1;
+    }
 
-            rect(3,px,py,8,8);
-            text(3,0,70,"hello world");
-            text(2,0,77,"hello world");
-            text(1,0,84,"hello world");
-            rect(1,10,10,10,10);
-            rect(2,10,20,10,10);
-            rect(3,10,30,10,10);
-            
-        }
+    if (held("left") ) {
+        px -= 1;
+    }
+
+    if (held("right")) {
+        px += 1;
+    }
+
+
+
+    if ( released("a") ) {
+        play("blip");
+    
+    }
+
+}
+
+//END: MAIN
+
 
     </script>
-
 </body>
 </html>
